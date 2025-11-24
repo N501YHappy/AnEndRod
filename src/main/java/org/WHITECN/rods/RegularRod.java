@@ -21,6 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RegularRod implements Listener {
     @EventHandler
@@ -43,7 +44,7 @@ public class RegularRod implements Listener {
         Player player = event.getPlayer();
         if (!(event.getRightClicked() instanceof Player)) return;
         Player target = (Player) event.getRightClicked();
-        ItemStack mainHand = player.getEquipment().getItemInMainHand();
+        ItemStack mainHand = Objects.requireNonNull(player.getEquipment()).getItemInMainHand();
         if (mainHand != null) {
             ItemMeta meta = mainHand.getItemMeta();
             if (meta != null && meta.getDisplayName().equals("§2普通末地烛")) {
