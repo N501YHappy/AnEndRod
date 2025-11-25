@@ -5,8 +5,8 @@
 更新中...?
 
 # 特别鸣谢
- - 想法来源: **CrystalNeko**
- - 功能与编码支持: **N501YHappy**
+ - 想法来源: [**CrystalNeko**](https://github.com/CSneko/)
+ - 功能与编码支持: [**N501YHappy**](https://github.com/N501YHappy/)
 
 请支持他的模组！https://github.com/CSneko/toNeko
 
