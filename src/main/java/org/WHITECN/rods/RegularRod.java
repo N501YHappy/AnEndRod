@@ -42,17 +42,12 @@ public class RegularRod implements Listener {
     @EventHandler
     public void onRegularRod_toEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
-        if (!(event.getRightClicked() instanceof Player)) return;
-        Player target = (Player) event.getRightClicked();
-        ItemStack mainHand = Objects.requireNonNull(player.getEquipment()).getItemInMainHand();
-        if (mainHand != null) {
+        if (event.getRightClicked() instanceof Player) {
+            Player target = (Player) event.getRightClicked();
+            ItemStack mainHand = Objects.requireNonNull(player.getEquipment()).getItemInMainHand();
             ItemMeta meta = mainHand.getItemMeta();
             if (meta != null && meta.getDisplayName().equals("§2普通末地烛")) {
                 event.setCancelled(true);
-                if (target.getEquipment().getLeggings() == null) {
-                    player.sendMessage(ChatColor.RED + target.getDisplayName() + "还穿着裤子呢!");
-                    return;
-                }
                 mainHand.setItemMeta(useCounter.addTime(meta));
                 meta.setLore(List.of("§7没什么特别的 就是末地烛哦\n","§7已使用 §e" + meta.getPersistentDataContainer().get(new NamespacedKey(anendrod.getInstance(),"useCount"), PersistentDataType.INTEGER) + "§7 次"));
                 mainHand.setItemMeta(meta);
