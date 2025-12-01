@@ -44,9 +44,9 @@ public class rodMerge implements CommandExecutor, Listener {
         Inventory mergeUI = Bukkit.createInventory(player,9,"§9§l兑换末地烛");
 
         //TODO:此处注册新的末地烛
-        ItemStack regularRod = rodItemGenerator.createRegularRod();
-        ItemStack slimeRod = rodItemGenerator.createSlimeRod();
-        ItemStack proRod = rodItemGenerator.createRegularProRod();
+        ItemStack regularRod = createMenuItem(Material.END_ROD,"§2普通末地烛","§7没什么特别的 就是末地烛哦");
+        ItemStack slimeRod = createMenuItem(Material.END_ROD,"§a粘液§2末地烛","§7一个黏糊糊的末地烛哦");
+        ItemStack proRod = createMenuItem(Material.END_ROD,"§bPro§2末地烛","§7普通末地烛的§bPro§7版");
 
         //TODO:此处加载进菜单
         mergeUI.addItem(regularRod);
@@ -105,6 +105,21 @@ public class rodMerge implements CommandExecutor, Listener {
                     break;
             }
         }
+    }
+
+    private static ItemStack createMenuItem(Material material, String name, String... lore) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+
+        List<String> loreList = new ArrayList<>();
+        for (String line : lore) {
+            loreList.add(line);
+        }
+        meta.setLore(loreList);
+
+        item.setItemMeta(meta);
+        return item;
     }
 
     private Boolean regularCheck(Inventory inv){
