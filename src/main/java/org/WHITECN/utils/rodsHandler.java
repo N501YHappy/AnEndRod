@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.World.Environment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
@@ -45,9 +46,11 @@ public class rodsHandler {
         player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,40,0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,100,4));
         player.damage(1d);
-        for (int i = 0; i < Math.abs(random.nextInt(2)); i++) {
-            Slime entity = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
-            entity.setSize(1);
+        if (ConfigManager.SUMMON_SLIME) {
+            for (int i = 0; i < Math.abs(random.nextInt(2)); i++) {
+                Slime entity = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
+                entity.setSize(1);
+            }
         }
         player.setCooldown(Material.END_ROD,10);
         player.setNoDamageTicks(5);
@@ -147,9 +150,11 @@ public class rodsHandler {
                     }
                 } else {
                     if(t == 1210){
-                        player.sendMessage(ChatColor.GRAY +"哗啦");
                         if (player.getLocation().getBlock().getType() == Material.AIR || player.getLocation().getBlock().getType()  == Material.CAVE_AIR || player.getLocation().getBlock().getType()  == Material.VOID_AIR) {
-                            player.getWorld().getBlockAt(player.getLocation()).setType(Material.WATER);
+                            if (player.getLocation().getWorld().getEnvironment() != Environment.NETHER) { //检测是不是在地狱
+                                player.sendMessage(ChatColor.GRAY +"哗啦");
+                                player.getWorld().getBlockAt(player.getLocation()).setType(Material.WATER);
+                            }
                         }
                     }
 

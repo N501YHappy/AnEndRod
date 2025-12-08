@@ -65,7 +65,9 @@ public final class anendrod extends JavaPlugin {
                         event.getPlayer().discoverRecipes(Collections.singletonList(regular));
                         event.getPlayer().discoverRecipes(Collections.singletonList(slime));
                         event.getPlayer().discoverRecipes(Collections.singletonList(pro));
-                        event.getPlayer().setResourcePack(ConfigManager.PACK_URL);//材质包
+                        if (ConfigManager.ENABLE_PACK) {
+                            event.getPlayer().setResourcePack(ConfigManager.PACK_URL);//材质包
+                        }
                     }
                 }, 20L);
             }
