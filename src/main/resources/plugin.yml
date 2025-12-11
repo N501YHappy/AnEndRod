@@ -1,5 +1,5 @@
 name: AnEndRod
-version: '1.7b'
+version: '1.7'
 main: org.WHITECN.anendrod
 api-version: '1.20'
 prefix: EndRod
@@ -9,5 +9,5 @@ description: 可插入末地烛....但是插件版?
 website: https://space.bilibili.com/598999070
 commands:
   rodmerge:
-    usage: /rodmerge
-    description: '打开末地烛兑换UI喵'
+    usage: /rodmerge 或 /rodmerge reload
+    description: '末地烛插件操作类喵'

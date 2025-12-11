@@ -1,6 +1,8 @@
 package org.WHITECN.rods;
 
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.WHITECN.anendrod;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -46,6 +48,10 @@ public class SlimeRod implements Listener {
         Player player = event.getPlayer();
         if (event.getRightClicked() instanceof Player){
             Player target = (Player) event.getRightClicked();
+            if (target.getEquipment().getLeggings() != null){
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§c怎么穿着裤子喵!"));
+                return;
+            }
             ItemStack mainHand = Objects.requireNonNull(player.getEquipment()).getItemInMainHand();
             ItemMeta meta = mainHand.getItemMeta();
             if (meta != null && meta.getDisplayName().equals("§a粘液§2末地烛") && player.isSneaking() && player.getCooldown(Material.END_ROD) == 0) {

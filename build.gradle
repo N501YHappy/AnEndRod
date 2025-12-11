@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'org.WHITECN'
-version = '1.7b'
+version = '1.7'
 
 repositories {
     mavenCentral()

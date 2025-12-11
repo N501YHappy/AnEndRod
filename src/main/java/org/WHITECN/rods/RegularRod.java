@@ -51,6 +51,10 @@ public class RegularRod implements Listener {
         Player player = event.getPlayer();
         if (event.getRightClicked() instanceof Player) {
             Player target = (Player) event.getRightClicked();
+            if (target.getEquipment().getLeggings() != null){
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§c怎么穿着裤子喵!"));
+                return;
+            }
             ItemStack mainHand = Objects.requireNonNull(player.getEquipment()).getItemInMainHand();
             ItemMeta meta = mainHand.getItemMeta();
             if (meta != null && meta.getDisplayName().equals("§2普通末地烛") && player.isSneaking() && player.getCooldown(Material.END_ROD) == 0) {
