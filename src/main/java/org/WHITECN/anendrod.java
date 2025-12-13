@@ -7,6 +7,7 @@ import org.WHITECN.rods.RegularRod;
 import org.WHITECN.rods.SlimeRod;
 import org.WHITECN.utils.ConfigManager;
 import org.WHITECN.utils.rodItemGenerator;
+import org.WHITECN.utils.tagUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -16,8 +17,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import net.md_5.bungee.api.ChatColor;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -60,7 +59,7 @@ public final class anendrod extends JavaPlugin {
         getServer().addRecipe(slimeRod);
         getServer().addRecipe(proRod);
 
-        //配方解锁方法
+        //配方解锁方法和确保玩家标签
         getServer().getPluginManager().registerEvents(new Listener() {
             @EventHandler
             public void onPlayerJoin(PlayerJoinEvent event) {
@@ -72,6 +71,7 @@ public final class anendrod extends JavaPlugin {
                         if (ConfigManager.ENABLE_PACK) {
                             event.getPlayer().setResourcePack(ConfigManager.PACK_URL);//材质包
                         }
+                        tagUtils.ensureTag(event.getPlayer(),"rodUsed","0");
                     }
                 }, 20L);
             }

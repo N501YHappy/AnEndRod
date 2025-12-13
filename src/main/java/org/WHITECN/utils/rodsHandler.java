@@ -43,6 +43,9 @@ public class rodsHandler {
         target.playSound(target, Insert_sounds.get(random.nextInt(Insert_sounds.size())), 100.0f, 1.0f);
         target.spawnParticle(Particle.HEART,target.getLocation(),30,1.5d,1.0d,1.5d);
         target.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§d呜嗯...进去了~"));
+        tagUtils.ensureTag(target,"rodUsed","0");
+        tagUtils.setTag(target,"rodUsed",String.valueOf(Integer.parseInt(tagUtils.getTag(target,"rodUsed"))+1));
+        AdvancementHandler.advancementTest(player);
     }
     public static void handleSlimeRod(Player player,Player target){
         target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,40,0));
@@ -59,6 +62,9 @@ public class rodsHandler {
         target.playSound(player,Insert_sounds.get(random.nextInt(Insert_sounds.size())), 100.0f, 1.0f);
         target.spawnParticle(Particle.HEART,player.getLocation(),30,1.5d,1.0d,1.5d);
         target.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§d呜嗯...进去了~"));
+        tagUtils.ensureTag(target,"rodUsed","0");
+        tagUtils.setTag(target,"rodUsed",String.valueOf(Integer.parseInt(tagUtils.getTag(target,"rodUsed"))+1));
+        AdvancementHandler.advancementTest(player);
     }
 
 
@@ -167,5 +173,8 @@ public class rodsHandler {
                 t++;
             }
         }.runTaskTimer(plug, 0L, 1L);
+        tagUtils.ensureTag(player,"rodUsed","0");
+        tagUtils.setTag(player,"rodUsed",String.valueOf(Integer.parseInt(tagUtils.getTag(player,"rodUsed"))+1));
+        AdvancementHandler.advancementTest(player);
     }
 }

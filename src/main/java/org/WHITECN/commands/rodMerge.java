@@ -3,6 +3,7 @@ package org.WHITECN.commands;
 import org.WHITECN.anendrod;
 import org.WHITECN.utils.ConfigManager;
 import org.WHITECN.utils.rodItemGenerator;
+import org.WHITECN.utils.tagUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -45,12 +46,35 @@ public class rodMerge implements CommandExecutor, Listener ,TabCompleter{
             sender.sendMessage(prefix + "§a配置已重载喵~");
             return true;
         }
+
         if (!(sender instanceof Player)) {
             sender.sendMessage(prefix + "§c该命令仅能被玩家执行喵");
             return true;
         }
+
         Player player = (Player) sender;
-        
+
+        if (args.length == 3) {
+            if (!sender.isOp()) {
+                sender.sendMessage(prefix + "§c你没有权限使用 setrodused 喵~");
+                return true;
+            }
+            try{
+                Player target = Bukkit.getPlayer(args[1]);
+                int usedCount = Integer.parseInt(args[2]);
+                if (target == null){
+                    player.sendMessage(prefix + "§c未查找到该玩家喵");
+                    return true;
+                }
+                tagUtils.ensureTag(target,"rodUsed","0");
+                tagUtils.setTag(target,"rodUsed",String.valueOf(usedCount));
+            }catch (ClassCastException e){
+                player.sendMessage(prefix + "§c请按照提示要求输入喵!");
+                return true;
+            }
+            return true;
+        }
+
         if (args.length != 0) {
             sender.sendMessage(prefix + "§c用法:/rodmerge");
             return true;
@@ -72,9 +96,21 @@ public class rodMerge implements CommandExecutor, Listener ,TabCompleter{
     }
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-        if (args.length == 1 && sender.isOp()) {
+        if (!sender.isOp()) {
+            return Collections.emptyList();
+        }
+        if (args.length == 1) {
             List<String> list = new ArrayList<>();
             list.add("reload");
+            list.add("setrodused");
+            return list;
+        }else if (args.length == 2 && args[0].equalsIgnoreCase("setrodused")) {
+            List<String> list = new ArrayList<>();
+            list.add("请输入玩家ID");
+            return list;
+        }else if (args.length == 3) {
+            List<String> list = new ArrayList<>();
+            list.add("请输入要修改到的使用次数(仅限整数)");
             return list;
         }
         return Collections.emptyList(); // 其余情况什么都没有！
