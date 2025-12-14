@@ -1,11 +1,11 @@
 name: AnEndRod
-version: '1.9b'
+version: '1.9'
 main: org.WHITECN.anendrod
 api-version: '1.20'
 prefix: EndRod
 load: STARTUP
 authors: [ WHITECN_凌星 ]
-description: 可插入末地烛....但是插件版?
+description: "可插入末地烛....但是插件版?"
 website: https://space.bilibili.com/598999070
 commands:
   rodmerge:

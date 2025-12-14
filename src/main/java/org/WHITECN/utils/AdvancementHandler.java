@@ -2,6 +2,7 @@ package org.WHITECN.utils;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -15,7 +16,7 @@ public class AdvancementHandler {
         message.addExtra(playerName);
         message.addExtra("取得了进度");
         message.addExtra(advancementText);
-        player.spigot().sendMessage(message);
+        Bukkit.broadcastMessage(message.toString());
         player.playSound(player, Sound.UI_TOAST_IN,100.0f, 1.0f);
     }
 
@@ -28,7 +29,7 @@ public class AdvancementHandler {
         message.addExtra(playerName);
         message.addExtra("完成了挑战");
         message.addExtra(advancementText);
-        player.spigot().sendMessage(message);
+        Bukkit.broadcastMessage(message.toString());
         player.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE,80.0f, 1.0f);
     }
 
