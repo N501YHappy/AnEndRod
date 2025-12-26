@@ -2,7 +2,7 @@ package org.WHITECN.commands;
 
 import org.WHITECN.anendrod;
 import org.WHITECN.utils.ConfigManager;
-import org.WHITECN.utils.rodItemGenerator;
+import org.WHITECN.utils.ItemGenerator;
 import org.WHITECN.utils.tagUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -55,41 +55,55 @@ public class rodMerge implements CommandExecutor, Listener ,TabCompleter{
         Player player = (Player) sender;
 
         if (args.length == 3) {
-            if (!sender.isOp()) {
-                sender.sendMessage(prefix + "§c你没有权限使用 setrodused 喵~");
-                return true;
-            }
-            try{
-                Player target = Bukkit.getPlayer(args[1]);
-                int usedCount = Integer.parseInt(args[2]);
-                if (target == null){
-                    player.sendMessage(prefix + "§c未查找到该玩家喵");
+            switch (args[1].toLowerCase()) {
+                case "setrodused":
+                    if (!sender.isOp()) {
+                        sender.sendMessage(prefix + "§c你没有权限使用 setrodused 喵~");
+                        return true;
+                    }
+                    try{
+                        Player target = Bukkit.getPlayer(args[1]);
+                        int usedCount = Integer.parseInt(args[2]);
+                        if (target == null){
+                            player.sendMessage(prefix + "§c未查找到该玩家喵");
+                            return true;
+                        }
+                        tagUtils.ensureTag(target,"rodUsed","0");
+                        tagUtils.setTag(target,"rodUsed",String.valueOf(usedCount));
+                    }catch (ClassCastException e){
+                        player.sendMessage(prefix + "§c请按照提示要求输入喵!");
+                        return true;
+                    }
                     return true;
-                }
-                tagUtils.ensureTag(target,"rodUsed","0");
-                tagUtils.setTag(target,"rodUsed",String.valueOf(usedCount));
-            }catch (ClassCastException e){
-                player.sendMessage(prefix + "§c请按照提示要求输入喵!");
-                return true;
+                case "getrodused":
+                    if (!sender.isOp()) {
+                        sender.sendMessage(prefix + "§c你没有权限使用 setrodused 喵~");
+                        return true;
+                    }
+                    Player target = Bukkit.getPlayer(args[1]);
+                    if (target == null) {
+                        player.sendMessage(prefix + "§c未查找到该玩家喵");
+                        return true;
+                    }
+                    tagUtils.ensureTag(target, "rodUsed", "0");
+                    sender.sendMessage(prefix + "§b该玩家的末地烛使用次数: §a" + tagUtils.getTag(target, "rodUsed"));
             }
-            return true;
         }
+        Inventory mergeUI = Bukkit.createInventory(player,18,"§9§l兑换小玩具");
 
-        if (args.length != 0) {
-            sender.sendMessage(prefix + "§c用法:/rodmerge");
-            return true;
-        }
-        Inventory mergeUI = Bukkit.createInventory(player,9,"§9§l兑换末地烛");
-
-        //TODO:此处注册新的末地烛
+        //TODO:此处注册新的物品
         ItemStack regularRod = createMenuItem(Material.END_ROD,"§2普通末地烛","§7没什么特别的 就是末地烛哦");
         ItemStack slimeRod = createMenuItem(Material.END_ROD,"§a粘液§2末地烛","§7一个黏糊糊的末地烛哦");
         ItemStack proRod = createMenuItem(Material.END_ROD,"§bPro§2末地烛","§7普通末地烛的§bPro§7版");
+        ItemStack handCuff = createMenuItem(Material.CHAINMAIL_CHESTPLATE,"§d手铐♥","§d这是一个手铐，可以限制玩家的行动");
+        ItemStack keyItem = createMenuItem(Material.TRIPWIRE_HOOK,"§7钥匙","§d这是一个钥匙，可以解锁也可以上锁");
 
         //TODO:此处加载进菜单
         mergeUI.addItem(regularRod);
         mergeUI.addItem(slimeRod);
         mergeUI.addItem(proRod);
+        mergeUI.setItem(9,handCuff);
+        mergeUI.setItem(10,keyItem);
 
         player.openInventory(mergeUI);
         return true;
@@ -103,12 +117,15 @@ public class rodMerge implements CommandExecutor, Listener ,TabCompleter{
             List<String> list = new ArrayList<>();
             list.add("reload");
             list.add("setrodused");
+            list.add("getrodused");
             return list;
-        }else if (args.length == 2 && args[0].equalsIgnoreCase("setrodused")) {
-            List<String> list = new ArrayList<>();
-            list.add("请输入玩家ID");
-            return list;
-        }else if (args.length == 3) {
+        }else if (args.length == 2 && (args[0].equalsIgnoreCase("setrodused") || args[0].equalsIgnoreCase("getrodused"))) {
+            List<String> playerNames = new ArrayList<>();
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                playerNames.add(online.getName());
+            }
+            return playerNames;
+        }else if (args.length == 3 && args[0].equalsIgnoreCase("setrodused")) {
             List<String> list = new ArrayList<>();
             list.add("请输入要修改到的使用次数(仅限整数)");
             return list;
@@ -135,7 +152,7 @@ public class rodMerge implements CommandExecutor, Listener ,TabCompleter{
             // 根据点击的物品执行不同操作
             switch (itemName) {
                 case "§2普通末地烛":
-                    ItemStack regularRod = rodItemGenerator.createRegularRod();
+                    ItemStack regularRod = ItemGenerator.createRegularRod();
                     if (regularCheck(inv)) {
                         inv.addItem(regularRod);
                         player.sendMessage(prefix + "§2兑换成功喵~");
@@ -144,7 +161,7 @@ public class rodMerge implements CommandExecutor, Listener ,TabCompleter{
                     player.sendMessage(prefix + "§c材料不足以兑换 普通末地烛 喵, 需要:末地烛x1");
                     break;
                 case "§a粘液§2末地烛":
-                    ItemStack slimeRod = rodItemGenerator.createSlimeRod();
+                    ItemStack slimeRod = ItemGenerator.createSlimeRod();
                     if (slimeCheck(inv)) {
                         inv.addItem(slimeRod);
                         player.sendMessage(prefix + "§2兑换成功喵~");
@@ -153,7 +170,7 @@ public class rodMerge implements CommandExecutor, Listener ,TabCompleter{
                     player.sendMessage(prefix + "§c材料不足以兑换 粘液末地烛 喵, 需要:末地烛x1 粘液球x1");
                     break;
                 case "§bPro§2末地烛":
-                    ItemStack proRod = rodItemGenerator.createRegularProRod();
+                    ItemStack proRod = ItemGenerator.createRegularProRod();
                     if (proCheck(inv)) {
                         inv.addItem(proRod);
                         player.sendMessage(prefix + "§2兑换成功喵~");

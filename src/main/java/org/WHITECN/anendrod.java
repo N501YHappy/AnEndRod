@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import org.WHITECN.commands.rodMerge;
-import org.WHITECN.items.Handcuffs;
+import org.WHITECN.items.HandcuffsAndKey;
 import org.WHITECN.listeners.DeathListener;
 import org.WHITECN.rods.RegularProRod;
 import org.WHITECN.rods.RegularRod;
@@ -14,7 +14,7 @@ import org.WHITECN.rods.SlimeRod;
 import org.WHITECN.runnables.DeathRunnable;
 import org.WHITECN.runnables.HandcuffsRunnable;
 import org.WHITECN.utils.ConfigManager;
-import org.WHITECN.utils.rodItemGenerator;
+import org.WHITECN.utils.ItemGenerator;
 import org.WHITECN.utils.tagUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Keyed;
@@ -42,8 +42,7 @@ public final class anendrod extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new RegularRod(),this);
         getServer().getPluginManager().registerEvents(new RegularProRod(),this);
         getServer().getPluginManager().registerEvents(new DeathListener(this),this);
-
-        getServer().getPluginManager().registerEvents(new Handcuffs(),this);
+        getServer().getPluginManager().registerEvents(new HandcuffsAndKey(),this);
 
         saveResource("AnEndRod_Pack.zip", true);
         ConfigManager.loadConfig(this); //加载配置文件
@@ -53,17 +52,20 @@ public final class anendrod extends JavaPlugin {
         removeRecipeIfExists("regular_rod");
         removeRecipeIfExists("slime");
         removeRecipeIfExists("pro");
-        removeRecipeIfExists("cuff");
+        removeRecipeIfExists("handcuff");
+        removeRecipeIfExists("key");
 
         //此处注册配方变量
         NamespacedKey regular = new NamespacedKey(anendrod.getInstance(),"regular_rod");
-        ShapelessRecipe regularRod = new ShapelessRecipe(regular, rodItemGenerator.createRegularRod());
+        ShapelessRecipe regularRod = new ShapelessRecipe(regular, ItemGenerator.createRegularRod());
         NamespacedKey slime = new NamespacedKey(anendrod.getInstance(),"slime");
-        ShapelessRecipe slimeRod = new ShapelessRecipe(slime,rodItemGenerator.createSlimeRod());
+        ShapelessRecipe slimeRod = new ShapelessRecipe(slime, ItemGenerator.createSlimeRod());
         NamespacedKey pro = new NamespacedKey(anendrod.getInstance(),"pro");
-        ShapelessRecipe proRod = new ShapelessRecipe(pro,rodItemGenerator.createRegularProRod());
-        NamespacedKey handcuff = new NamespacedKey(anendrod.getInstance(),"cuff");
-        ShapelessRecipe handcuffs = new ShapelessRecipe(pro,Handcuffs.getItem());
+        ShapelessRecipe proRod = new ShapelessRecipe(pro, ItemGenerator.createRegularProRod());
+        NamespacedKey handcuff = new NamespacedKey(anendrod.getInstance(),"handcuff");
+        ShapelessRecipe handcuffs = new ShapelessRecipe(handcuff,ItemGenerator.createHandCuffs());
+        NamespacedKey key = new NamespacedKey(anendrod.getInstance(),"key");
+        ShapelessRecipe keyItem = new ShapelessRecipe(key,ItemGenerator.createKeyItem());
 
         //此处注册配方物品
         regularRod.addIngredient(1, Material.END_ROD);
@@ -72,6 +74,8 @@ public final class anendrod extends JavaPlugin {
         proRod.addIngredient(9,Material.END_ROD);
         handcuffs.addIngredient(2,Material.IRON_INGOT);
         handcuffs.addIngredient(2,Material.CHAIN);
+        keyItem.addIngredient(1,Material.IRON_INGOT);
+        keyItem.addIngredient(1,Material.STICK);
 
         //此处注册配方
 
@@ -79,6 +83,7 @@ public final class anendrod extends JavaPlugin {
         getServer().addRecipe(slimeRod);
         getServer().addRecipe(proRod);
         getServer().addRecipe(handcuffs);
+        getServer().addRecipe(keyItem);
 
         //配方解锁方法和确保玩家标签
         getServer().getPluginManager().registerEvents(new Listener() {
@@ -98,11 +103,12 @@ public final class anendrod extends JavaPlugin {
                 }, 20L);
             }
         }, this);
-        for(Player p : Bukkit.getOnlinePlayers()){
-            p.discoverRecipes(Collections.singletonList(regular));
-            p.discoverRecipes(Collections.singletonList(slime));
-            p.discoverRecipes(Collections.singletonList(pro));
-            p.discoverRecipes(Collections.singletonList(handcuff));
+        for(Player player : Bukkit.getOnlinePlayers()){
+            player.discoverRecipes(Collections.singletonList(regular));
+            player.discoverRecipes(Collections.singletonList(slime));
+            player.discoverRecipes(Collections.singletonList(pro));
+            player.discoverRecipes(Collections.singletonList(handcuff));
+            player.discoverRecipes(Collections.singletonList(key));
         }//为在线猫粮注册配方
         new DeathRunnable().runTaskTimer(this, 0L, 20*1L); //计时器！！！
         new HandcuffsRunnable().runTaskTimer(this, 0L,20* 5L); //计时器！！！
