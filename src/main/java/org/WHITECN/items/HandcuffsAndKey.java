@@ -2,10 +2,13 @@ package org.WHITECN.items;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.WHITECN.anendrod;
-import org.WHITECN.utils.keyGen;
+import org.WHITECN.utils.KeyGen;
+import org.WHITECN.utils.tagUtils;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,16 +18,19 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import net.md_5.bungee.api.ChatColor;
 
+import static org.WHITECN.anendrod.prefix;
+
 public class HandcuffsAndKey implements Listener{
     public static final String handCuffsName = ChatColor.LIGHT_PURPLE + "手铐♥";
     public static final String keyItemName = ChatColor.GRAY + "钥匙";
-    private static final double RANGE = 1.5;
+    private static final double RANGE = 2.5;
     @EventHandler
     public void onSwap(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
@@ -36,28 +42,41 @@ public class HandcuffsAndKey implements Listener{
 
         /* 名字过滤：主手必须是手铐，副手必须是钥匙 */
         ItemMeta mainMeta = main.getItemMeta();
-        ItemMeta offMeta   = off.getItemMeta();
-        if (!handCuffsName.equals(mainMeta.getDisplayName()) ||
-            !keyItemName.equals(offMeta.getDisplayName())) return;
+        ItemMeta offMeta = off.getItemMeta();
+        if (!(handCuffsName.equals(mainMeta.getDisplayName())) || !(keyItemName.equals(offMeta.getDisplayName()))) return;
 
-        List<Integer> cuffsCode = keyGen.getKey(mainMeta);
-        List<Integer> keyCode = keyGen.getKey(offMeta);
+        List<Integer> cuffsCode = KeyGen.getKey(mainMeta);
+        List<Integer> keyCode   = KeyGen.getKey(offMeta);
+
+        if (main.getAmount() > 1 || off.getAmount() > 1) event.getPlayer().sendMessage(ChatColor.RED + "只能进行一次绑定！");
 
         /* 规则 1：俩都没数据 → 生成新钥匙并同时写入 */
         if (cuffsCode.isEmpty() && keyCode.isEmpty()) {
-            List<Integer> newCode = keyGen.generateKey();
-            keyGen.setKey(mainMeta, newCode);
-            keyGen.setKey(offMeta, newCode);
-            mainMeta.addEnchant(org.bukkit.enchantments.Enchantment.BINDING_CURSE, 1, true);
-            mainMeta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
+            List<Integer> newCode = KeyGen.generateKey();
+            KeyGen.setKey(mainMeta, newCode);
+            KeyGen.setKey(offMeta, newCode);
+            mainMeta.addEnchant(Enchantment.BINDING_CURSE, 1, true);
+            mainMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             int[] arr = newCode.stream().mapToInt(Integer::intValue).toArray();
-            String keyPattern = keyGen.getKeyShape(newCode);
-            List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.LIGHT_PURPLE + "这是一个钥匙，可以解锁也可以上锁");
-            lore.add(ChatColor.GREEN + "目前绑定钥匙：" + ChatColor.WHITE + keyPattern);
-            offMeta.setLore(lore);
-            mainMeta.getPersistentDataContainer().set(new NamespacedKey(anendrod.getInstance(),"code"),PersistentDataType.INTEGER_ARRAY,arr);
-            offMeta.getPersistentDataContainer().set(new NamespacedKey(anendrod.getInstance(),"code"),PersistentDataType.INTEGER_ARRAY,arr);
+            String keyPattern = KeyGen.getKeyShape(newCode);
+            List<String> offLore = new ArrayList<>();
+            offLore.add(ChatColor.LIGHT_PURPLE + "这是一个钥匙，可以解锁也可以上锁");
+            offLore.add(ChatColor.GRAY + keyPattern);
+            offMeta.setLore(offLore);
+
+            List<String> mainLore = mainMeta.getLore();
+            mainLore.add(ChatColor.LIGHT_PURPLE + "需要钥匙: "+ ChatColor.GRAY + keyPattern);
+            mainMeta.setLore(mainLore);
+
+            mainMeta.getPersistentDataContainer().set(
+                    new NamespacedKey(anendrod.getInstance(), "code"),
+                    PersistentDataType.INTEGER_ARRAY, arr);
+            offMeta.getPersistentDataContainer().set(
+                    new NamespacedKey(anendrod.getInstance(), "code"),
+                    PersistentDataType.INTEGER_ARRAY, arr);
+
+            main.setItemMeta(mainMeta);
+            off.setItemMeta(offMeta);
             player.sendMessage(ChatColor.GREEN + "手铐与钥匙已绑定！");
             return;
         }
@@ -69,8 +88,8 @@ public class HandcuffsAndKey implements Listener{
                     new NamespacedKey(anendrod.getInstance(), "code"),
                     PersistentDataType.INTEGER_ARRAY,
                     keyCode.stream().mapToInt(Integer::intValue).toArray());
-            mainMeta.addEnchant(org.bukkit.enchantments.Enchantment.BINDING_CURSE, 1, true);
-            mainMeta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
+            mainMeta.addEnchant(Enchantment.BINDING_CURSE, 1, true);
+            mainMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             main.setItemMeta(mainMeta);
             player.sendMessage(ChatColor.GREEN + "手铐已绑定到当前钥匙！");
             return;
@@ -85,8 +104,12 @@ public class HandcuffsAndKey implements Listener{
 
         Player user  = event.getPlayer();
         Player target = (Player) event.getRightClicked();
+        tagUtils.ensureTag(target,"canCuff","false");
         ItemStack mainHand = user.getInventory().getItemInMainHand();
         if (!mainHand.hasItemMeta()) return;
+        if (tagUtils.getTag(target,"canCuff").equals("false")){
+            user.sendMessage(prefix + "§c该用户已禁用手铐玩法！");
+        }
         ItemMeta meta = mainHand.getItemMeta();
         if (!handCuffsName.equals(meta.getDisplayName())) return;
         if(target.getEquipment().getChestplate() != null) return;
@@ -117,7 +140,7 @@ public class HandcuffsAndKey implements Listener{
         ItemMeta cuffsMeta = cuffs.getItemMeta();
         if (!handCuffsName.equals(cuffsMeta.getDisplayName())) return;
 
-        List<Integer> cuffsCode = keyGen.getKey(cuffsMeta);
+        List<Integer> cuffsCode = KeyGen.getKey(cuffsMeta);
         
         if (cuffsCode.isEmpty()) {
             target.getInventory().setChestplate(null);
@@ -125,7 +148,7 @@ public class HandcuffsAndKey implements Listener{
             return;
         }
         
-        List<Integer> keyCode = keyGen.getKey(keyMeta);
+        List<Integer> keyCode = KeyGen.getKey(keyMeta);
         if (keyCode.isEmpty() || !keyCode.equals(cuffsCode)) {
             return;
         }
@@ -137,15 +160,19 @@ public class HandcuffsAndKey implements Listener{
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR) return;
-        if (event.getPlayer().getLocation().distance(event.getClickedBlock().getLocation().add(0.5, 0.5, 0.5)) > RANGE) {
-            event.setCancelled(true);
+        if (Objects.requireNonNull((Objects.requireNonNull(Objects.requireNonNull(event.getPlayer().getEquipment()).getChestplate())).getItemMeta()).getDisplayName().equals("§d手铐♥")) {
+            if (event.getPlayer().getLocation().distance(Objects.requireNonNull(event.getClickedBlock()).getLocation().add(0.5, 0.5, 0.5)) > RANGE) {
+                event.setCancelled(true);
+            }
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onInteractEntity(PlayerInteractEntityEvent event) {
-        if (event.getPlayer().getLocation().distance(event.getRightClicked().getLocation()) > RANGE) {
-            event.setCancelled(true);
+        if (Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(event.getPlayer().getEquipment()).getChestplate()).getItemMeta()).getDisplayName().equals("§d手铐♥")){
+            if (event.getPlayer().getLocation().distance(event.getRightClicked().getLocation()) > RANGE) {
+                event.setCancelled(true);
+            }
         }
     }
 }

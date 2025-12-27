@@ -10,7 +10,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-public class keyGen {
+public class KeyGen {
     public static final Random RANDOM = new Random();
     private static final List<Character> KEY_CHARS =
             Arrays.asList('╦', '╬', '╩', '╦', '╬', '╩', '╦', '╬', '╩', '╦');
@@ -20,10 +20,10 @@ public class keyGen {
             throw new IllegalArgumentException("需要 10 位数字");
         }
         StringBuilder sb = new StringBuilder(11);
+        sb.append('◯');
         for (int digit : code) {
             sb.append(KEY_CHARS.get(digit));
         }
-        sb.append('◯');
         return sb.toString();
     }
 
