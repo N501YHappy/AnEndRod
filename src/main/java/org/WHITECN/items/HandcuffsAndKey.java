@@ -34,8 +34,8 @@ public class HandcuffsAndKey implements Listener{
     @EventHandler
     public void onSwap(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
-        ItemStack main = event.getMainHandItem();
-        ItemStack off  = event.getOffHandItem();
+        ItemStack main = event.getOffHandItem(); //实际上是获取切换 到 副手的物品 即切换前主手的物品
+        ItemStack off = event.getMainHandItem(); //我不知道为什么要这样设置这个API 这玩意好他妈怪
         
         if (main == null || off == null) return;
         if (!main.hasItemMeta() || !off.hasItemMeta()) return;
@@ -157,21 +157,35 @@ public class HandcuffsAndKey implements Listener{
         target.getWorld().dropItemNaturally(target.getLocation(), cuffs);
     }
 
+    @EventHandler
+    public void checkSelfCuff(PlayerInteractEvent event) {
+        if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null || event.getPlayer().getInventory().getItemInOffHand().getItemMeta() != null) {
+            if (event.getItem().getItemMeta().getDisplayName().equals("§d手铐♥")) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(prefix + "§c想要自缚嘛？不可以哦");
+            }
+        }
+    }
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
-        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR) return;
-        if (Objects.requireNonNull((Objects.requireNonNull(Objects.requireNonNull(event.getPlayer().getEquipment()).getChestplate())).getItemMeta()).getDisplayName().equals("§d手铐♥")) {
-            if (event.getPlayer().getLocation().distance(Objects.requireNonNull(event.getClickedBlock()).getLocation().add(0.5, 0.5, 0.5)) > RANGE) {
-                event.setCancelled(true);
+        if (!(event.getAction() == Action.LEFT_CLICK_AIR) || !(event.getAction() == Action.RIGHT_CLICK_AIR)) return;
+        if (event.getPlayer().getEquipment().getChestplate() != null) {
+            if (event.getPlayer().getEquipment().getChestplate().getItemMeta().getDisplayName().equals("§d手铐♥")) {
+                if (event.getPlayer().getLocation().distance(Objects.requireNonNull(event.getClickedBlock()).getLocation().add(0.5, 0.5, 0.5)) > RANGE) {
+                    event.setCancelled(true);
+                }
             }
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onInteractEntity(PlayerInteractEntityEvent event) {
-        if (Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(event.getPlayer().getEquipment()).getChestplate()).getItemMeta()).getDisplayName().equals("§d手铐♥")){
-            if (event.getPlayer().getLocation().distance(event.getRightClicked().getLocation()) > RANGE) {
-                event.setCancelled(true);
+        if (event.getPlayer().getEquipment().getChestplate() != null) {
+            if (event.getPlayer().getEquipment().getChestplate().getItemMeta().getDisplayName().equals("§d手铐♥")) {
+                if (event.getPlayer().getLocation().distance(event.getRightClicked().getLocation()) > RANGE) {
+                    event.setCancelled(true);
+                }
             }
         }
     }

@@ -61,6 +61,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/org/WHITECN/commands/rodMerge.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/org/WHITECN/items/HandcuffsAndKey.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -75,7 +76,6 @@
   "keyToString": {
     "Gradle.AnEndRod [wrapper].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/DesktopFiles/AA MinecraftProjects/AAA 模组 插件 源码/AnEndRod",
     "node.js.detected.package.eslint": "true",
@@ -163,7 +163,8 @@
       <workItem from="1766234936358" duration="2509000" />
       <workItem from="1766755160079" duration="8827000" />
       <workItem from="1766804794772" duration="4277000" />
-      <workItem from="1766809140175" duration="2865000" />
+      <workItem from="1766809140175" duration="3417000" />
+      <workItem from="1766820420776" duration="6498000" />
     </task>
     <task id="LOCAL-00001" summary="首次发布">
       <option name="closed" value="true" />

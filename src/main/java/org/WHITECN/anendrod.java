@@ -64,7 +64,7 @@ public final class anendrod extends JavaPlugin {
         NamespacedKey pro = new NamespacedKey(anendrod.getInstance(),"pro");
         ShapelessRecipe proRod = new ShapelessRecipe(pro, ItemGenerator.createRegularProRod());
         NamespacedKey handcuff = new NamespacedKey(anendrod.getInstance(),"handcuff");
-        ShapelessRecipe handcuffs = new ShapelessRecipe(handcuff,ItemGenerator.createHandCuffs());
+        ShapelessRecipe handcuffItem = new ShapelessRecipe(handcuff,ItemGenerator.createHandCuffs());
         NamespacedKey key = new NamespacedKey(anendrod.getInstance(),"key");
         ShapelessRecipe keyItem = new ShapelessRecipe(key,ItemGenerator.createKeyItem());
 
@@ -73,8 +73,8 @@ public final class anendrod extends JavaPlugin {
         slimeRod.addIngredient(1,Material.END_ROD);
         slimeRod.addIngredient(1,Material.SLIME_BALL);
         proRod.addIngredient(9,Material.END_ROD);
-        handcuffs.addIngredient(2,Material.IRON_INGOT);
-        handcuffs.addIngredient(2,Material.CHAIN);
+        handcuffItem.addIngredient(2,Material.IRON_INGOT);
+        handcuffItem.addIngredient(2,Material.CHAIN);
         keyItem.addIngredient(1,Material.IRON_INGOT);
         keyItem.addIngredient(1,Material.STICK);
 
@@ -83,7 +83,7 @@ public final class anendrod extends JavaPlugin {
         getServer().addRecipe(regularRod);
         getServer().addRecipe(slimeRod);
         getServer().addRecipe(proRod);
-        getServer().addRecipe(handcuffs);
+        getServer().addRecipe(handcuffItem);
         getServer().addRecipe(keyItem);
 
         //配方解锁方法和确保玩家标签
@@ -94,7 +94,7 @@ public final class anendrod extends JavaPlugin {
                     if (event.getPlayer().isOnline()) {
                         event.getPlayer().discoverRecipes(Collections.singletonList(regular));
                         event.getPlayer().discoverRecipes(Collections.singletonList(slime));
-                        getServer().addRecipe(handcuffs);
+                        event.getPlayer().discoverRecipes(Collections.singletonList(handcuff));
                         event.getPlayer().discoverRecipes(Collections.singletonList(pro));
                         if (ConfigManager.ENABLE_PACK) {
                             event.getPlayer().setResourcePack(ConfigManager.PACK_URL);//材质包

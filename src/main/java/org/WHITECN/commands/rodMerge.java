@@ -195,6 +195,24 @@ public class rodMerge implements CommandExecutor, Listener ,TabCompleter{
                     }
                     player.sendMessage(prefix + "§c材料不足以兑换 Pro末地烛 喵, 需要:末地烛x9");
                     break;
+                case "§d手铐♥":
+                    ItemStack handCuff = ItemGenerator.createHandCuffs();
+                    if (handcuffCheck(inv)) {
+                        inv.addItem(handCuff);
+                        player.sendMessage(prefix + "§2兑换成功喵~");
+                        break;
+                    }
+                    player.sendMessage(prefix + "§c材料不足以兑换 手铐 喵, 需要:铁锭x2 链条x2");
+                    break;
+                case "§7钥匙":
+                    ItemStack key = ItemGenerator.createKeyItem();
+                    if (keyCheck(inv)) {
+                        inv.addItem(key);
+                        player.sendMessage(prefix + "§2兑换成功喵~");
+                        break;
+                    }
+                    player.sendMessage(prefix + "§c材料不足以兑换 钥匙 喵, 需要:铁锭x1 木棍x1");
+                    break;
             }
         }
     }
@@ -223,6 +241,7 @@ public class rodMerge implements CommandExecutor, Listener ,TabCompleter{
         }
         return false;
     }
+
     private Boolean proCheck(Inventory inv){
         for (ItemStack item : inv.getContents()){
             if (item != null && item.getType().equals(Material.END_ROD) && !Objects.requireNonNull(item.getItemMeta()).hasLore() && item.getAmount() >= 9){
@@ -279,5 +298,110 @@ public class rodMerge implements CommandExecutor, Listener ,TabCompleter{
         }
 
         return false;
+    }
+
+    /**
+     * 手铐兑换检查（需要：铁锭 x2，链条 x2）
+     * 会在满足条件时从背包中扣除对应物品（支持分散在多个槽的堆叠）
+     */
+    private Boolean handcuffCheck(Inventory inv) {
+        int needIron = 2;
+        int needChain = 2;
+
+        // 先统计是否满足条件
+        int foundIron = 0;
+        int foundChain = 0;
+        for (ItemStack item : inv.getContents()) {
+            if (item == null) continue;
+            if (item.getType() == Material.IRON_INGOT) foundIron += item.getAmount();
+            if (item.getType() == Material.CHAIN) foundChain += item.getAmount();
+            if (foundIron >= needIron && foundChain >= needChain) break;
+        }
+
+        if (foundIron < needIron || foundChain < needChain) return false;
+
+        // 扣除铁锭
+        int toRemove = needIron;
+        for (int i = 0; i < inv.getSize() && toRemove > 0; i++) {
+            ItemStack item = inv.getItem(i);
+            if (item == null) continue;
+            if (item.getType() != Material.IRON_INGOT) continue;
+            if (item.getAmount() > toRemove) {
+                item.setAmount(item.getAmount() - toRemove);
+                toRemove = 0;
+            } else {
+                toRemove -= item.getAmount();
+                inv.setItem(i, null);
+            }
+        }
+
+        // 扣除链条
+        toRemove = needChain;
+        for (int i = 0; i < inv.getSize() && toRemove > 0; i++) {
+            ItemStack item = inv.getItem(i);
+            if (item == null) continue;
+            if (item.getType() != Material.CHAIN) continue;
+            if (item.getAmount() > toRemove) {
+                item.setAmount(item.getAmount() - toRemove);
+                toRemove = 0;
+            } else {
+                toRemove -= item.getAmount();
+                inv.setItem(i, null);
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 钥匙兑换检查（需要：铁锭 x1，木棍 x1）
+     * 会在满足条件时从背包中扣除对应物品（支持分散在多个槽的堆叠）
+     */
+    private Boolean keyCheck(Inventory inv) {
+        int needIron = 1;
+        int needStick = 1;
+
+        int foundIron = 0;
+        int foundStick = 0;
+        for (ItemStack item : inv.getContents()) {
+            if (item == null) continue;
+            if (item.getType() == Material.IRON_INGOT) foundIron += item.getAmount();
+            if (item.getType() == Material.STICK) foundStick += item.getAmount();
+            if (foundIron >= needIron && foundStick >= needStick) break;
+        }
+
+        if (foundIron < needIron || foundStick < needStick) return false;
+
+        // 扣除铁锭
+        int toRemove = needIron;
+        for (int i = 0; i < inv.getSize() && toRemove > 0; i++) {
+            ItemStack item = inv.getItem(i);
+            if (item == null) continue;
+            if (item.getType() != Material.IRON_INGOT) continue;
+            if (item.getAmount() > toRemove) {
+                item.setAmount(item.getAmount() - toRemove);
+                toRemove = 0;
+            } else {
+                toRemove -= item.getAmount();
+                inv.setItem(i, null);
+            }
+        }
+
+        // 扣除木棍
+        toRemove = needStick;
+        for (int i = 0; i < inv.getSize() && toRemove > 0; i++) {
+            ItemStack item = inv.getItem(i);
+            if (item == null) continue;
+            if (item.getType() != Material.STICK) continue;
+            if (item.getAmount() > toRemove) {
+                item.setAmount(item.getAmount() - toRemove);
+                toRemove = 0;
+            } else {
+                toRemove -= item.getAmount();
+                inv.setItem(i, null);
+            }
+        }
+
+        return true;
     }
 }
