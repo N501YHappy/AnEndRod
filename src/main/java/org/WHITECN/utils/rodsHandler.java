@@ -36,7 +36,7 @@ public class rodsHandler {
     );
     public static void handleRegularRod(Player player,Player target){
         target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,40,0));
-        target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,100,4));
+        target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,100,1));
         target.damage(1.0d);
         player.setCooldown(Material.END_ROD,10);
         target.setNoDamageTicks(5);
@@ -52,7 +52,7 @@ public class rodsHandler {
     }
     public static void handleSlimeRod(Player player,Player target){
         target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,40,0));
-        target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,100,4));
+        target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,100,1));
         target.damage(1d);
         if (ConfigManager.SUMMON_SLIME) {
             for (int i = 0; i < Math.abs(random.nextInt(2)); i++) {
@@ -77,9 +77,9 @@ public class rodsHandler {
     public static void handleRegularProRod(Player player) {
         Plugin plug = JavaPlugin.getPlugin(anendrod.class);
         player.setCooldown(Material.END_ROD,80*20);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,100 * 20, 3));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS,50 * 20, 3));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 80 * 20, 3));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100 * 20, 3));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80 * 20, 2));
 
         SQLiteUtils.setChaCount(player.getName(),SQLiteUtils.getChaCount(player.getName())+1);
         //持续80喵

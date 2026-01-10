@@ -5,19 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="58eb9611-125e-4742-8610-cd8d849e9d48" name="更改" comment="首次发布喵">
-      <change beforePath="$PROJECT_DIR$/.gradle/8.8/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.8/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.8/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.8/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.8/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.8/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.8/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/AnEndRod-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/AnEndRod-1.1.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/RegularRod.class.uniqueId4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/SlimeRod.class.uniqueId0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/anendrod$1.class.uniqueId5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/anendrod.class.uniqueId3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/rodItemGenerator.class.uniqueId1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/useCounter.class.uniqueId2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/libs/AnEndRod-2.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/AnEndRod-2.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/WHITECN/Placeholders.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/WHITECN/Placeholders.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/WHITECN/anendrod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/WHITECN/anendrod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/WHITECN/utils/rodsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/WHITECN/utils/rodsHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +76,7 @@
   "keyToString": {
     "Gradle.AnEndRod [wrapper].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/DesktopFiles/AA MinecraftProjects/AAA 模组 插件 源码/AnEndRod",
     "node.js.detected.package.eslint": "true",
@@ -165,6 +166,10 @@
       <workItem from="1766804794772" duration="4277000" />
       <workItem from="1766809140175" duration="3417000" />
       <workItem from="1766820420776" duration="6498000" />
+      <workItem from="1766834601487" duration="260000" />
+      <workItem from="1766927389364" duration="3000" />
+      <workItem from="1767435983616" duration="108000" />
+      <workItem from="1768007347596" duration="1236000" />
     </task>
     <task id="LOCAL-00001" summary="首次发布">
       <option name="closed" value="true" />

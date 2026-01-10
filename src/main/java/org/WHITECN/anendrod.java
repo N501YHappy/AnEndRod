@@ -48,7 +48,6 @@ public final class anendrod extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new RegularProRod(),this);
         getServer().getPluginManager().registerEvents(new DeathListener(this),this);
         getServer().getPluginManager().registerEvents(new HandcuffsAndKey(),this);
-        getServer().getPluginManager().registerEvents(new HandcuffsAndKey(),this);
         Bukkit.getPluginManager().registerEvents(new Listener() {
             @EventHandler
             public void onPluginEnable(PluginEnableEvent event) {

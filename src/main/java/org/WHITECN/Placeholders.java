@@ -27,10 +27,6 @@ public class Placeholders extends PlaceholderExpansion implements Listener{
 
     @Override
     public String onRequest(OfflinePlayer offlinePlayer, @NotNull String params) {
-        if (!offlinePlayer.isOnline()) {
-            return "§c离线";
-        }
-
         Player player = offlinePlayer.getPlayer();
         if (player == null) return "0";
         int player_cha = SQLiteUtils.getChaCount(player.getName());
