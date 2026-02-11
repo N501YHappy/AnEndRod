@@ -8,7 +8,9 @@ import java.util.logging.Logger;
 import org.WHITECN.commands.rodMerge;
 import org.WHITECN.items.HandcuffsAndKey;
 import org.WHITECN.listeners.DeathListener;
+import org.WHITECN.listeners.DiaoLuoDePenJianYaoshui;
 import org.WHITECN.listeners.SlimesListener;
+import org.WHITECN.rods.PotionRod;
 import org.WHITECN.rods.RegularProRod;
 import org.WHITECN.rods.RegularRod;
 import org.WHITECN.rods.SlimeRod;
@@ -47,9 +49,11 @@ public final class anendrod extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SlimeRod(),this);
         getServer().getPluginManager().registerEvents(new RegularRod(),this);
         getServer().getPluginManager().registerEvents(new RegularProRod(),this);
+        getServer().getPluginManager().registerEvents(new PotionRod(),this);
         getServer().getPluginManager().registerEvents(new DeathListener(this),this);
         getServer().getPluginManager().registerEvents(new HandcuffsAndKey(),this);
-        getServer().getPluginManager().registerEvents(new SlimesListener(),this);
+        getServer().getPluginManager().registerEvents(new RegularProRod(),this);
+        getServer().getPluginManager().registerEvents(new DiaoLuoDePenJianYaoshui(),this);
         Bukkit.getPluginManager().registerEvents(new Listener() {
             @EventHandler
             public void onPluginEnable(PluginEnableEvent event) {
@@ -73,6 +77,7 @@ public final class anendrod extends JavaPlugin {
         removeRecipeIfExists("regular_rod");
         removeRecipeIfExists("slime");
         removeRecipeIfExists("pro");
+        removeRecipeIfExists("potion");
         removeRecipeIfExists("handcuff");
         removeRecipeIfExists("key");
 
@@ -83,6 +88,8 @@ public final class anendrod extends JavaPlugin {
         ShapelessRecipe slimeRod = new ShapelessRecipe(slime, ItemGenerator.createSlimeRod());
         NamespacedKey pro = new NamespacedKey(anendrod.getInstance(),"pro");
         ShapelessRecipe proRod = new ShapelessRecipe(pro, ItemGenerator.createRegularProRod());
+        NamespacedKey potion = new NamespacedKey(anendrod.getInstance(),"potion");
+        ShapelessRecipe potionRod = new ShapelessRecipe(potion, ItemGenerator.createPotionRod());
         NamespacedKey handcuff = new NamespacedKey(anendrod.getInstance(),"handcuff");
         ShapelessRecipe handcuffItem = new ShapelessRecipe(handcuff,ItemGenerator.createHandCuffs());
         NamespacedKey key = new NamespacedKey(anendrod.getInstance(),"key");
@@ -93,6 +100,8 @@ public final class anendrod extends JavaPlugin {
         slimeRod.addIngredient(1,Material.END_ROD);
         slimeRod.addIngredient(1,Material.SLIME_BALL);
         proRod.addIngredient(9,Material.END_ROD);
+        potionRod.addIngredient(1,Material.END_ROD);
+        potionRod.addIngredient(1,Material.GLASS_BOTTLE);
         handcuffItem.addIngredient(2,Material.IRON_INGOT);
         handcuffItem.addIngredient(2,Material.CHAIN);
         keyItem.addIngredient(1,Material.IRON_INGOT);
