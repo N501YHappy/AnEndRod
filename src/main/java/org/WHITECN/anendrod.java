@@ -20,6 +20,7 @@ import org.WHITECN.utils.ConfigManager;
 import org.WHITECN.utils.ItemGenerator;
 import org.WHITECN.utils.SQLiteUtils;
 import org.WHITECN.utils.tagUtils;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Keyed;
 import org.bukkit.Material;
@@ -43,6 +44,10 @@ public final class anendrod extends JavaPlugin {
     public void onEnable() {
         instance = this;
         logger = getLogger();
+
+        int pluginId = 29492;
+        Metrics metrics = new Metrics(this, pluginId);
+
         logger.info("插件已启用喵");
         SQLiteUtils.init(this); //初始化数据库utils
         Objects.requireNonNull(this.getCommand("rodmerge")).setExecutor(new rodMerge(this));
